@@ -49,7 +49,7 @@ const UserProfile = () => {
         <div className='min-h-screen bg-gray-50'>
             {/* Header */}
             <div className='fixed p-6 top-0 flex items-center justify-between w-screen bg-white shadow-sm'>
-                <img className='w-25 h-20' src={logo} alt="Cabby Logo" />
+                <img className='w-15 h-10' src={logo} alt="Cabby Logo" />
                 <Link to='/home' className='h-10 w-10 bg-gray-100 flex items-center justify-center rounded-full'>
                     <i className="text-lg font-medium ri-arrow-left-line"></i>
                 </Link>

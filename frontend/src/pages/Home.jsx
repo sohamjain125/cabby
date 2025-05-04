@@ -231,7 +231,7 @@ const Home = () => {
                     >
                         <i className="text-lg font-medium ri-menu-line"></i>
                     </button>
-                    <img className='w-25 h-20' src={logo} alt="Cabby Logo" />
+                    <img className='w-15 h-10' src={logo} alt="Cabby Logo" />
                 </div>
                 <div className='flex items-center gap-4'>
                     <Link to='/user/profile' className='h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-sm'>
