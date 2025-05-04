@@ -11,20 +11,25 @@ import WaitingForDriver from '../components/WaitingForDriver';
 import { SocketContext } from '../context/SocketContext';
 import { useContext } from 'react';
 import { UserDataContext } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import LiveTracking from '../components/LiveTracking';
 import logo from '../assets/logo.png'
+import RideHistory from '../components/RideHistory'
+import PaymentHistory from '../components/PaymentHistory'
+import Sidebar from '../components/Sidebar'
 
 const Home = () => {
     const [ pickup, setPickup ] = useState('')
     const [ destination, setDestination ] = useState('')
     const [ panelOpen, setPanelOpen ] = useState(false)
+    const [ sidebarOpen, setSidebarOpen ] = useState(false)
     const vehiclePanelRef = useRef(null)
     const confirmRidePanelRef = useRef(null)
     const vehicleFoundRef = useRef(null)
     const waitingForDriverRef = useRef(null)
     const panelRef = useRef(null)
     const panelCloseRef = useRef(null)
+    const sidebarRef = useRef(null)
     const [ vehiclePanel, setVehiclePanel ] = useState(false)
     const [ confirmRidePanel, setConfirmRidePanel ] = useState(false)
     const [ vehicleFound, setVehicleFound ] = useState(false)
@@ -35,6 +40,8 @@ const Home = () => {
     const [ fare, setFare ] = useState({})
     const [ vehicleType, setVehicleType ] = useState(null)
     const [ ride, setRide ] = useState(null)
+    const [ showRides, setShowRides ] = useState(false)
+    const [ showPayments, setShowPayments ] = useState(false)
 
     const navigate = useNavigate()
 
@@ -46,8 +53,6 @@ const Home = () => {
     }, [ user ])
 
     socket.on('ride-confirmed', ride => {
-
-
         setVehicleFound(false)
         setWaitingForDriver(true)
         setRide(ride)
@@ -56,9 +61,8 @@ const Home = () => {
     socket.on('ride-started', ride => {
         console.log("ride")
         setWaitingForDriver(false)
-        navigate('/riding', { state: { ride } }) // Updated navigate to include ride data
+        navigate('/riding', { state: { ride } })
     })
-
 
     const handlePickupChange = async (e) => {
         setPickup(e.target.value)
@@ -68,7 +72,6 @@ const Home = () => {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
-
             })
             setPickupSuggestions(response.data)
         } catch {
@@ -100,7 +103,6 @@ const Home = () => {
             gsap.to(panelRef.current, {
                 height: '70%',
                 padding: 24
-                // opacity:1
             })
             gsap.to(panelCloseRef.current, {
                 opacity: 1
@@ -109,14 +111,12 @@ const Home = () => {
             gsap.to(panelRef.current, {
                 height: '0%',
                 padding: 0
-                // opacity:0
             })
             gsap.to(panelCloseRef.current, {
                 opacity: 0
             })
         }
     }, [ panelOpen ])
-
 
     useGSAP(function () {
         if (vehiclePanel) {
@@ -166,6 +166,19 @@ const Home = () => {
         }
     }, [ waitingForDriver ])
 
+    useGSAP(function () {
+        if (sidebarOpen) {
+            gsap.to(sidebarRef.current, {
+                x: 0,
+                duration: 0.3
+            })
+        } else {
+            gsap.to(sidebarRef.current, {
+                x: '-100%',
+                duration: 0.3
+            })
+        }
+    }, [sidebarOpen])
 
     async function findTrip() {
         setVehiclePanel(true)
@@ -178,10 +191,7 @@ const Home = () => {
             }
         })
 
-
         setFare(response.data)
-
-
     }
 
     async function createRide() {
@@ -194,16 +204,123 @@ const Home = () => {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
+    }
 
-
+    const closeSidebar = () => {
+        setSidebarOpen(false)
+        setShowRides(false)
+        setShowPayments(false)
     }
 
     return (
         <div className='h-screen relative overflow-hidden'>
-            {/* <img className='w-16 absolute left-5 top-5' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" /> */}
-             <img className='w-16 absolute left-5 top-5' src={logo} alt="Cabby Logo" />
+            {/* Welcome message */}
+            {user && (
+                <div className='fixed top-0 left-1/2 transform -translate-x-1/2 mt-2 z-50 bg-green-100 text-green-800 px-4 py-2 rounded shadow'>
+                    Welcome, User
+                </div>
+            )}
+            <div className='fixed p-6 top-0 flex items-center justify-between w-screen bg-white shadow-sm z-50'>
+                <div className='flex items-center gap-4'>
+                    <button 
+                        onClick={() => {
+                            setSidebarOpen(true)
+                            console.log('Sidebar open button clicked, sidebarOpen set to true')
+                        }}
+                        className='h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-sm'
+                    >
+                        <i className="text-lg font-medium ri-menu-line"></i>
+                    </button>
+                    <img className='w-25 h-20' src={logo} alt="Cabby Logo" />
+                </div>
+                <div className='flex items-center gap-4'>
+                    <Link to='/user/profile' className='h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-sm'>
+                        <i className="text-lg font-medium ri-user-line"></i>
+                    </Link>
+                    <Link to='/user/logout' className='h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-sm'>
+                        <i className="text-lg font-medium ri-logout-box-r-line"></i>
+                    </Link>
+                </div>
+            </div>
+
+            <Sidebar open={sidebarOpen} onClose={closeSidebar}>
+                <div className='p-6 relative'>
+                    <div className='flex items-center justify-between mb-8'>
+                        <h2 className='text-xl font-semibold'>Menu</h2>
+                        <button 
+                            style={{ position: 'absolute', top: 12, right: 12, background: 'red', color: 'white', border: '2px solid black', zIndex: 1000 }}
+                            onClick={() => {
+                                alert('Sidebar close button clicked');
+                                closeSidebar();
+                            }}
+                            className='h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-100'
+                        >
+                            <i className="ri-close-line"></i>
+                        </button>
+                    </div>
+                    <div className='space-y-4'>
+                        <Link 
+                            to='/user/profile'
+                            className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50'
+                            onClick={closeSidebar}
+                        >
+                            <i className="text-xl ri-user-line"></i>
+                            <span>Profile</span>
+                        </Link>
+                        <div className='border-t border-gray-100 my-4'></div>
+                        <button 
+                            onClick={() => setShowRides(!showRides)}
+                            className='w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50'
+                        >
+                            <div className='flex items-center gap-3'>
+                                <i className="text-xl ri-route-line"></i>
+                                <span>My Rides</span>
+                            </div>
+                            <i className={`ri-arrow-${showRides ? 'up' : 'down'}-s-line`}></i>
+                        </button>
+                        {showRides && (
+                            <div className='px-3'>
+                                <RideHistory />
+                            </div>
+                        )}
+                        <div className='border-t border-gray-100 my-4'></div>
+                        <button 
+                            onClick={() => setShowPayments(!showPayments)}
+                            className='w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50'
+                        >
+                            <div className='flex items-center gap-3'>
+                                <i className="text-xl ri-bank-card-line"></i>
+                                <span>Payments</span>
+                            </div>
+                            <i className={`ri-arrow-${showPayments ? 'up' : 'down'}-s-line`}></i>
+                        </button>
+                        {showPayments && (
+                            <div className='px-3'>
+                                <PaymentHistory />
+                            </div>
+                        )}
+                        <div className='border-t border-gray-100 my-4'></div>
+                        <Link 
+                            to='/user/settings'
+                            className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50'
+                            onClick={closeSidebar}
+                        >
+                            <i className="text-xl ri-settings-3-line"></i>
+                            <span>Settings</span>
+                        </Link>
+                        <Link 
+                            to='/user/logout'
+                            className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50'
+                            onClick={closeSidebar}
+                        >
+                            <i className="text-xl ri-logout-box-r-line"></i>
+                            <span>Logout</span>
+                        </Link>
+                    </div>
+                </div>
+            </Sidebar>
+
             <div className='h-screen w-screen'>
-                {/* image for temporary use  */}
                 <LiveTracking />
             </div>
             <div className=' flex flex-col justify-end h-screen absolute top-0 w-full'>
@@ -261,7 +378,7 @@ const Home = () => {
                 <VehiclePanel
                     selectVehicle={setVehicleType}
                     fare={fare} setConfirmRidePanel={setConfirmRidePanel} setVehiclePanel={setVehiclePanel} />
-            </div>
+                </div>
             <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
                 <ConfirmRide
                     createRide={createRide}
@@ -269,7 +386,6 @@ const Home = () => {
                     destination={destination}
                     fare={fare}
                     vehicleType={vehicleType}
-
                     setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound} />
             </div>
             <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
