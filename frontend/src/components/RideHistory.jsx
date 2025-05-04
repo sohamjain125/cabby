@@ -59,33 +59,33 @@ const RideHistory = ({ isCaptain }) => {
     }
 
     return (
-        <div className="p-2">
-            <h2 className="text-lg font-semibold mb-2">Recent Rides</h2>
-            <div className="space-y-2">
+        <div className="p-1 sm:p-2">
+            <h2 className="text-base sm:text-lg font-semibold mb-2">Recent Rides</h2>
+            <div className="space-y-1 sm:space-y-2">
                 {rides.map((ride) => (
                     <div key={ride.id} className="bg-white p-2 rounded-md shadow-sm border border-gray-100">
                         <div className="flex justify-between items-start mb-1">
                             <div>
-                                <p className="font-medium text-base">{ride.passenger}</p>
+                                <p className="font-medium text-sm sm:text-base">{ride.passenger}</p>
                                 <p className="text-xs text-gray-500">{ride.date} at {ride.time}</p>
                             </div>
-                            <span className="text-green-600 font-medium text-base">{ride.fare}</span>
+                            <span className="text-green-600 font-medium text-sm sm:text-base">{ride.fare}</span>
                         </div>
                         <div className="text-xs text-gray-600">
                             <p>From: {ride.from}</p>
                             <p>To: {ride.to}</p>
                         </div>
-                        <div className="mt-1 flex items-center gap-2">
-                            <span className="px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs">
+                        <div className="mt-1 flex items-center gap-1 sm:gap-2">
+                            <span className="px-1.5 sm:px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs">
                                 {ride.status}
                             </span>
                             {ride.paid ? (
-                                <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                <span className="px-1.5 sm:px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs">
                                     {isCaptain ? 'Payment Received' : 'Paid'}
                                 </span>
                             ) : !isCaptain && (
                                 <button
-                                    className="ml-2 px-2 py-0.5 bg-pink-600 text-white rounded text-xs hover:bg-pink-700"
+                                    className="ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 bg-pink-600 text-white rounded text-xs hover:bg-pink-700"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();

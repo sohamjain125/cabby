@@ -84,122 +84,121 @@ const CaptainHome = () => {
     }
 
     return (
-        <div className='h-screen'>
+        <div className='h-screen bg-gray-50 w-full max-w-full overflow-x-hidden box-border'>
             {/* Welcome message */}
             {captain && (
-                <div className='fixed top-0 left-1/2 transform -translate-x-1/2 mt-2 z-50 bg-blue-100 text-blue-800 px-4 py-2 rounded shadow'>
+                <div className='fixed top-0 left-1/2 transform -translate-x-1/2 mt-2 z-50 bg-blue-100 text-blue-800 px-3 py-1 sm:px-4 sm:py-2 rounded shadow text-xs sm:text-base'>
                     Welcome, Captain
                 </div>
             )}
-            <div className='fixed p-6 top-0 flex items-center justify-between w-screen bg-white shadow-sm z-50'>
-                <div className='flex items-center gap-4'>
+            <div className='fixed p-2 sm:p-4 top-0 flex items-center justify-between w-full sm:w-screen bg-white shadow-sm z-50 box-border'>
+                <div className='flex items-center gap-2 sm:gap-4'>
                     <button 
                         onClick={() => {
                             setSidebarOpen(true)
                             console.log('Sidebar open button clicked, sidebarOpen set to true')
                         }}
-                        className='h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-sm'
+                        className='h-8 w-8 sm:h-10 sm:w-10 bg-white flex items-center justify-center rounded-full shadow-sm'
                     >
-                        <i className="text-lg font-medium ri-menu-line"></i>
+                        <i className="text-base sm:text-lg font-medium ri-menu-line"></i>
                     </button>
-                    <img className='w-15 h-10' src={logo} alt="Cabby Logo" />
+                    <img className='w-12 h-8 sm:w-15 sm:h-10 object-contain' src={logo} alt="Cabby Logo" />
                 </div>
-                <div className='flex items-center gap-4'>
-                    <Link to='/captain/profile' className='h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-sm'>
-                        <i className="text-lg font-medium ri-user-line"></i>
+                <div className='flex items-center gap-2 sm:gap-4'>
+                    <Link to='/captain/profile' className='h-8 w-8 sm:h-10 sm:w-10 bg-white flex items-center justify-center rounded-full shadow-sm'>
+                        <i className="text-base sm:text-lg font-medium ri-user-line"></i>
                     </Link>
-                    <Link to='/captain/logout' className='h-10 w-10 bg-white flex items-center justify-center rounded-full shadow-sm'>
-                        <i className="text-lg font-medium ri-logout-box-r-line"></i>
+                    <Link to='/captain/logout' className='h-8 w-8 sm:h-10 sm:w-10 bg-white flex items-center justify-center rounded-full shadow-sm'>
+                        <i className="text-base sm:text-lg font-medium ri-logout-box-r-line"></i>
                     </Link>
                 </div>
             </div>
 
             <Sidebar open={sidebarOpen} onClose={closeSidebar}>
-                <div className='p-6 relative'>
-                    <div className='flex items-center justify-between mb-8'>
-                        <h2 className='text-xl font-semibold'>Menu</h2>
+                <div className='p-3 sm:p-6 relative w-full max-w-full box-border'>
+                    <div className='flex items-center justify-between mb-5 sm:mb-8'>
+                        <h2 className='text-lg sm:text-xl font-semibold'>Menu</h2>
                         <button 
                             style={{ position: 'absolute', top: 12, right: 12, background: 'red', color: 'white', border: '2px solid black', zIndex: 1000 }}
                             onClick={() => {
                                 alert('Sidebar close button clicked');
                                 closeSidebar();
                             }}
-                            className='h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-100'
+                            className='h-7 w-7 sm:h-8 sm:w-8 flex items-center justify-center rounded-full hover:bg-gray-100'
                         >
                             <i className="ri-close-line"></i>
                         </button>
                     </div>
-                    <div className='space-y-4'>
+                    <div className='space-y-3 sm:space-y-4'>
                         <Link 
                             to='/captain/profile'
-                            className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50'
+                            className='flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-gray-50 text-sm sm:text-base'
                             onClick={closeSidebar}
                         >
-                            <i className="text-xl ri-user-line"></i>
+                            <i className="text-lg sm:text-xl ri-user-line"></i>
                             <span>Profile</span>
                         </Link>
-                        <div className='border-t border-gray-100 my-4'></div>
+                        <div className='border-t border-gray-100 my-3 sm:my-4'></div>
                         <button 
                             onClick={() => setShowRides(!showRides)}
-                            className='w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50'
+                            className='w-full flex items-center justify-between p-2 sm:p-3 rounded-lg hover:bg-gray-50 text-sm sm:text-base'
                         >
-                            <div className='flex items-center gap-3'>
-                                <i className="text-xl ri-route-line"></i>
+                            <div className='flex items-center gap-2 sm:gap-3'>
+                                <i className="text-lg sm:text-xl ri-route-line"></i>
                                 <span>My Rides</span>
                             </div>
                             <i className={`ri-arrow-${showRides ? 'up' : 'down'}-s-line`}></i>
                         </button>
                         {showRides && (
-                            <div className='px-3'>
+                            <div className='px-2 sm:px-3'>
                                 <RideHistory />
                             </div>
                         )}
-                        <div className='border-t border-gray-100 my-4'></div>
+                        <div className='border-t border-gray-100 my-3 sm:my-4'></div>
                         <button 
                             onClick={() => setShowEarnings(!showEarnings)}
-                            className='w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-50'
+                            className='w-full flex items-center justify-between p-2 sm:p-3 rounded-lg hover:bg-gray-50 text-sm sm:text-base'
                         >
-                            <div className='flex items-center gap-3'>
-                                <i className="text-xl ri-money-dollar-circle-line"></i>
+                            <div className='flex items-center gap-2 sm:gap-3'>
+                                <i className="text-lg sm:text-xl ri-money-dollar-circle-line"></i>
                                 <span>Earnings</span>
                             </div>
                             <i className={`ri-arrow-${showEarnings ? 'up' : 'down'}-s-line`}></i>
                         </button>
                         {showEarnings && (
-                            <div className='px-3'>
+                            <div className='px-2 sm:px-3'>
                                 <Earnings />
                             </div>
                         )}
-                        <div className='border-t border-gray-100 my-4'></div>
+                        <div className='border-t border-gray-100 my-3 sm:my-4'></div>
                         <Link 
                             to='/captain/settings'
-                            className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50'
+                            className='flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-gray-50 text-sm sm:text-base'
                             onClick={closeSidebar}
                         >
-                            <i className="text-xl ri-settings-3-line"></i>
+                            <i className="text-lg sm:text-xl ri-settings-3-line"></i>
                             <span>Settings</span>
                         </Link>
                         <Link 
                             to='/captain/logout'
-                            className='flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50'
+                            className='flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-gray-50 text-sm sm:text-base'
                             onClick={closeSidebar}
                         >
-                            <i className="text-xl ri-logout-box-r-line"></i>
+                            <i className="text-lg sm:text-xl ri-logout-box-r-line"></i>
                             <span>Logout</span>
                         </Link>
                     </div>
                 </div>
             </Sidebar>
 
-            <div className='h-3/5'>
-                <img className='h-full w-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
+            <div className='w-full h-auto sm:h-3/5 box-border'>
+                <img className='h-full w-full object-cover rounded-b-xl' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
             </div>
-            <div className='h-2/5 p-6'>
+            <div className='w-full h-auto sm:h-2/5 p-2 sm:p-6 box-border'>
                 <CaptainDetails />
             </div>
             {ridePopupPanel && (
-                console.log('Rendering RidePopUp, ride:', ride),
-                <div ref={ridePopupPanelRef} className='fixed w-full z-10 bottom-0 bg-white px-3 py-10 pt-12'>
+                <div ref={ridePopupPanelRef} className='fixed w-full z-10 bottom-0 bg-white px-1 sm:px-3 py-6 sm:py-10 pt-8 sm:pt-12 box-border'>
                     <RidePopUp
                         ride={ride}
                         setRidePopupPanel={setRidePopupPanel}
@@ -209,7 +208,7 @@ const CaptainHome = () => {
                 </div>
             )}
             {confirmRidePopupPanel && (
-                <div ref={confirmRidePopupPanelRef} className='fixed w-full h-screen z-10 bottom-0 bg-white px-3 py-10 pt-12'>
+                <div ref={confirmRidePopupPanelRef} className='fixed w-full h-screen z-10 bottom-0 bg-white px-1 sm:px-3 py-6 sm:py-10 pt-8 sm:pt-12 box-border'>
                     <ConfirmRidePopUp
                         ride={ride}
                         setConfirmRidePopupPanel={setConfirmRidePopupPanel}
