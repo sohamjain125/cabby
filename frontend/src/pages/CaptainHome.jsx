@@ -49,10 +49,15 @@ const CaptainHome = () => {
         updateLocation()
     }, [])
 
-    socket.on('new-ride', (data) => {
-        setRide(data)
-        setRidePopupPanel(true)
-    })
+    useEffect(() => {
+        socket.on('new-ride', (data) => {
+            console.log('Received new-ride event:', data);
+            setRide(data);
+            setRidePopupPanel(true);
+        });
+        // Optionally clean up
+        // return () => socket.off('new-ride');
+    }, []);
 
     async function confirmRide() {
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`, {
@@ -192,19 +197,26 @@ const CaptainHome = () => {
             <div className='h-2/5 p-6'>
                 <CaptainDetails />
             </div>
-            <div ref={ridePopupPanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
-                <RidePopUp
-                    ride={ride}
-                    setRidePopupPanel={setRidePopupPanel}
-                    setConfirmRidePopupPanel={setConfirmRidePopupPanel}
-                    confirmRide={confirmRide}
-                />
-            </div>
-            <div ref={confirmRidePopupPanelRef} className='fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
-                <ConfirmRidePopUp
-                    ride={ride}
-                    setConfirmRidePopupPanel={setConfirmRidePopupPanel} setRidePopupPanel={setRidePopupPanel} />
-            </div>
+            {ridePopupPanel && (
+                console.log('Rendering RidePopUp, ride:', ride),
+                <div ref={ridePopupPanelRef} className='fixed w-full z-10 bottom-0 bg-white px-3 py-10 pt-12'>
+                    <RidePopUp
+                        ride={ride}
+                        setRidePopupPanel={setRidePopupPanel}
+                        setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+                        confirmRide={confirmRide}
+                    />
+                </div>
+            )}
+            {confirmRidePopupPanel && (
+                <div ref={confirmRidePopupPanelRef} className='fixed w-full h-screen z-10 bottom-0 bg-white px-3 py-10 pt-12'>
+                    <ConfirmRidePopUp
+                        ride={ride}
+                        setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+                        setRidePopupPanel={setRidePopupPanel}
+                    />
+                </div>
+            )}
         </div>
     )
 }
