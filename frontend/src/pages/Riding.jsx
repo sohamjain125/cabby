@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom' // Added useLocation
 import { useEffect, useContext } from 'react'
 import { SocketContext } from '../context/SocketContext'
@@ -11,10 +11,20 @@ const Riding = () => {
     const { socket } = useContext(SocketContext)
     const navigate = useNavigate()
 
+    const [paymentLoading, setPaymentLoading] = useState(false);
+    const [paymentDone, setPaymentDone] = useState(false);
+
     socket.on("ride-ended", () => {
         navigate('/home')
     })
 
+    const handlePayment = () => {
+        setPaymentLoading(true);
+        setTimeout(() => {
+            setPaymentLoading(false);
+            setPaymentDone(true);
+        }, 1500);
+    }
 
     return (
         <div className='h-screen'>
@@ -55,7 +65,21 @@ const Riding = () => {
                         </div>
                     </div>
                 </div>
-                <button className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'>Make a Payment</button>
+                {!paymentDone && !paymentLoading && (
+                    <button onClick={handlePayment} className='w-full mt-5 bg-green-600 text-white font-semibold p-2 rounded-lg'>Make a Payment</button>
+                )}
+                {paymentLoading && (
+                    <div className='w-full mt-5 flex flex-col items-center'>
+                        <div className='w-8 h-8 border-4 border-green-400 border-t-transparent rounded-full animate-spin mb-2'></div>
+                        <span className='text-green-700 font-semibold'>Processing Payment...</span>
+                    </div>
+                )}
+                {paymentDone && (
+                    <div className='w-full mt-5 flex flex-col items-center'>
+                        <i className='ri-checkbox-circle-fill text-4xl text-green-500 mb-2'></i>
+                        <span className='text-green-700 font-semibold text-lg'>Payment Successful!</span>
+                    </div>
+                )}
             </div>
         </div>
     )

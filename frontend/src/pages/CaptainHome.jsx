@@ -151,7 +151,7 @@ const CaptainHome = () => {
                         </button>
                         {showRides && (
                             <div className='px-2 sm:px-3'>
-                                <RideHistory />
+                                <RideHistory isCaptain={true} />
                             </div>
                         )}
                         <div className='border-t border-gray-100 my-3 sm:my-4'></div>

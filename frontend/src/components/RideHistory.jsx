@@ -2,8 +2,43 @@ import React, { useState } from 'react'
 import DummyPaymentModal from './DummyPaymentModal'
 
 const RideHistory = ({ isCaptain }) => {
-    // Add a paid property to dummy rides for demo
-    const [rides, setRides] = useState([
+    const userRides = [
+        {
+            id: 1,
+            date: '2024-03-15',
+            time: '09:30 AM',
+            from: 'Koramangala',
+            to: 'Indiranagar',
+            fare: '₹250',
+            status: 'Completed',
+            passenger: 'You',
+            paid: false
+        },
+        {
+            id: 2,
+            date: '2024-03-14',
+            time: '02:15 PM',
+            from: 'HSR Layout',
+            to: 'Electronic City',
+            fare: '₹350',
+            status: 'Completed',
+            passenger: 'You',
+            paid: true
+        },
+        {
+            id: 3,
+            date: '2024-03-13',
+            time: '11:45 AM',
+            from: 'Whitefield',
+            to: 'Marathahalli',
+            fare: '₹180',
+            status: 'Completed',
+            passenger: 'You',
+            paid: false
+        }
+    ];
+
+    const captainRides = [
         {
             id: 1,
             date: '2024-03-15',
@@ -37,7 +72,9 @@ const RideHistory = ({ isCaptain }) => {
             passenger: 'Arjun Reddy',
             paid: false
         }
-    ])
+    ];
+
+    const [rides, setRides] = useState(isCaptain ? captainRides : userRides);
     const [modalOpen, setModalOpen] = useState(false)
     const [selectedRide, setSelectedRide] = useState(null)
 
@@ -83,17 +120,23 @@ const RideHistory = ({ isCaptain }) => {
                                 <span className="px-1.5 sm:px-2 py-0.5 bg-blue-100 text-blue-800 rounded-full text-xs">
                                     {isCaptain ? 'Payment Received' : 'Paid'}
                                 </span>
-                            ) : !isCaptain && (
-                                <button
-                                    className="ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 bg-pink-600 text-white rounded text-xs hover:bg-pink-700"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        handleMakePayment(ride);
-                                    }}
-                                >
-                                    Make Payment
-                                </button>
+                            ) : (
+                                isCaptain ? (
+                                    <span className="px-1.5 sm:px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full text-xs">
+                                        Awaiting Payment
+                                    </span>
+                                ) : (
+                                    <button
+                                        className="ml-1 sm:ml-2 px-1.5 sm:px-2 py-0.5 bg-pink-600 text-white rounded text-xs hover:bg-pink-700"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleMakePayment(ride);
+                                        }}
+                                    >
+                                        Make Payment
+                                    </button>
+                                )
                             )}
                         </div>
                     </div>
