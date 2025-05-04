@@ -280,7 +280,7 @@ const Home = () => {
                         </button>
                         {showRides && (
                             <div className='px-3'>
-                                <RideHistory />
+                                <RideHistory isCaptain={false} />
                             </div>
                         )}
                         <div className='border-t border-gray-100 my-4'></div>
