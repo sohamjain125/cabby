@@ -15,13 +15,13 @@ const UserProfile = () => {
     const recentRides = [
         {
             id: 1,
-            date: '2024-03-15',
-            time: '09:30 AM',
-            from: 'Koramangala',
-            to: 'Indiranagar',
-            fare: '₹250',
+            date: '2025-05-16',
+            time: '10:30 AM',
+            from: 'Medicaps University',
+            to: 'Silicon City',
+            fare: '₹167',
             status: 'Completed',
-            captain: 'Amit Verma'
+            captain: 'Soham Jain'
         },
         {
             id: 2,

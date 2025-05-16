@@ -7,9 +7,9 @@ const RideHistory = ({ isCaptain }) => {
             id: 1,
             date: '2024-03-15',
             time: '09:30 AM',
-            from: 'Koramangala',
-            to: 'Indiranagar',
-            fare: '₹250',
+            from: 'Medicaps University',
+            to: 'Silicon City',
+            fare: '₹167',
             status: 'Completed',
             passenger: 'You',
             paid: false
@@ -43,11 +43,11 @@ const RideHistory = ({ isCaptain }) => {
             id: 1,
             date: '2024-03-15',
             time: '09:30 AM',
-            from: 'Koramangala',
-            to: 'Indiranagar',
-            fare: '₹250',
+            from: 'Medicaps University',
+            to: 'Silicon City',
+            fare: '₹167',
             status: 'Completed',
-            passenger: 'Rahul Sharma',
+            passenger: 'Female User',
             paid: false
         },
         {
